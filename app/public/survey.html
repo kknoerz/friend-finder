@@ -236,15 +236,15 @@
 
 	    	// AJAX post the data to the friends API.
 	    	$.post(currentURL + "/api/friends", userData, function(data){
-					debugger;
+
 					console.log(data);
 
 	    		// // Grab the result from the AJAX post so that the best match's name and photo are displayed.
-	    		// $("#matchName").text(data.name);
-	    		// $('#matchImg').attr("src", data.photo);
-					//
-		    	// // Show the modal with the best match
-		    	// $("#resultsModal").modal('toggle');
+	    		$("#matchName").text(data[0].name);
+	    		$('#matchImg').attr("src", data[0].photo);
+
+		    	// Show the modal with the best match
+		    	$("#resultsModal").modal('toggle');
 
 	    	});
 		}

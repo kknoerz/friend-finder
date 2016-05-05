@@ -23,8 +23,6 @@ app.listen(PORT, function(){
    console.log('app is listening on port ' + PORT);
 })
 
-// app.use('/app/friends', routes);
-
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/app/public/home.html');
 });
@@ -35,6 +33,7 @@ app.get('/survey', function(req, res) {
 
 app.post('/api/friends', function(req, res){
   var newUser = req.body;
+  console.log('This is newUser: ', newUser);
   console.log('This is new user scores: ', newUser.scores);
   var scores = newUser.scores.join();
   var currentUsers = [];
@@ -61,14 +60,40 @@ app.post('/api/friends', function(req, res){
       console.log(currentUsers);
     }
 
+    var totalDif = {};
+    for (k=0;k<currentUsers.length;k++){
+      var num = 0;
+      for(h=0;h<currentUsers[k].scores.length;h++){
+
+        function diff(num1, num2){
+          var num1 = parseInt(newUser.scores[h]);
+          var num2 = currentUsers[k].scores[h];
+          num += ((num1 > num2)? num1-num2 : num2-num1)
+          // var numm += num
+          totalDif[currentUsers[k].id] = num
+
+          console.log('This is total difference, ', totalDif);
+        }
+        diff();
+      }
+    }
+
+    var sortedArray = Object.keys(totalDif).sort(function(a,b){return totalDif[a]-totalDif[b]});
+    console.log('this is sortedArray: ', sortedArray);
+    var sortedString = sortedArray.join(' and id = ');
+    var topString = sortedArray[0];
+    console.log('this is sortedString: ', sortedString);
+
+    connection.query('SELECT id, name, scores, photo FROM users WHERE id = '+topString+';', function(err, result){
+      if(err) throw err;
+      console.log('This is your closest match: ', result);
+      res.send(result);
+    });
+
   });
 
-  for (k=0;k<currentUsers.length;k++){
 
-  }
-
-
-  // connection.query('INSERT INTO users(name, photo, scores) VALUES("'+newUser.name+'", "'+newUser.photo+'", "'+scores+'");', function(err, result){
+  // connection.query('INSERT INTO users(name, photo, scoress) VALUES("'+newUser.name+'", "'+newUser.photo+'", "'+scores+'");', function(err, result){
   //   if(err) throw err;
   //   console.log('This is result: ',result);
   // })
@@ -92,14 +117,3 @@ app.get('/api', function(req, res){
     res.send(html)
   })
 });
-
-// app.get('/api/friends', function(req, res){
-//   connection.query('select * from users', function(err, result){
-//     console.log('result ', result);
-//     res.render(result);
-//   });
-// });
-
-// app.get('/api/friends', function(req,res){
-//   console.log('This is response ', res.body);
-// });
