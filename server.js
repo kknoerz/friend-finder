@@ -93,27 +93,15 @@ app.post('/api/friends', function(req, res){
   });
 
 
-  // connection.query('INSERT INTO users(name, photo, scoress) VALUES("'+newUser.name+'", "'+newUser.photo+'", "'+scores+'");', function(err, result){
-  //   if(err) throw err;
-  //   console.log('This is result: ',result);
-  // })
+  connection.query('INSERT INTO users(name, photo, scores) VALUES("'+newUser.name+'", "'+newUser.photo+'", "'+scores+'");', function(err, result){
+    if(err) throw err;
+    console.log('This is result: ',result);
+  });
 });
 
 app.get('/api', function(req, res){
   connection.query('select * from users', function(err, result){
     if(err) throw err;
-
-    var html = '<ol>'
-
-    for (var i = 0; i < result.length; i++) {
-      html += '<li><p> ID: ' + result[i].id + '</p>';
-      html += '<p>Name: ' + result[i].name + ' </p></li>';
-      html += '<p>photo: ' + result[i].photo + ' </p></li>';
-      html += '<p>scores: ' + result[i].scores + ' </p></li>';
-    };
-
-    html += '</ul>'
-
-    res.send(html)
+    res.send(result);
   })
 });
