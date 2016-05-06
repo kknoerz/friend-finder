@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-var PORT = 3000; //avoid ports between 1-1234, use 3000, and 8080
+var PORT = 5000; //avoid ports between 1-1234, use 3000, and 8080
 var mysql = require('mysql');
 // var routes = require('./app/public/survey.html');
 
