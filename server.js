@@ -1,9 +1,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-var PORT = 5000; //avoid ports between 1-1234, use 3000, and 8080
+var PORT = process.env.port || 3000; //avoid ports between 1-1234, use 3000, and 8080
 var mysql = require('mysql');
 // var routes = require('./app/public/survey.html');
+var db = process.env.DATABASE_URL || 'localhost'
 
 var app = express();
 var userArray = [];
@@ -12,6 +13,20 @@ var connection = mysql.createConnection({
   host      : 'localhost',
   user      : 'root',
   database  : 'friendFinderDB'
+});
+
+var pg = require('pg');
+
+app.get('/db', function (request, response) {
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    client.query('SELECT * FROM test_table', function(err, result) {
+      done();
+      if (err)
+       { console.error(err); response.send("Error " + err); }
+      else
+       { response.render('pages/db', {results: result.rows} ); }
+    });
+  });
 });
 
 app.use(bodyParser.json());
@@ -29,6 +44,10 @@ app.get('/', function(req, res) {
 
 app.get('/survey', function(req, res) {
     res.sendFile(__dirname + '/app/public/survey.html');
+});
+
+app.get('/users', function(req, res){
+  res.sendFile(__dirname + '/app/public/users.html');
 });
 
 app.post('/api/friends', function(req, res){
@@ -99,9 +118,10 @@ app.post('/api/friends', function(req, res){
   });
 });
 
-app.get('/api', function(req, res){
+app.post('/users', function(req, res){
   connection.query('select * from users', function(err, result){
     if(err) throw err;
+
     res.send(result);
   })
 });

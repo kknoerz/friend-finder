@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>FriendFinder</title>
+
+	<!-- Latest compiled and minified CSS & JS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+	<!-- Font Awesome Glyphicons -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+</head>
+<body>
+
+	<body>
+
+		<div class="container ">
+
+			<div class="jumbotron">
+				<h1 class=""><i class="fa fa-facebook-square" aria-hidden="true"></i> Friend Finder</h1>
+				<hr>
+				<h2 class="">Here's a look at all users. </h2>
+				<br>
+			</div>
+
+			<div class="container users">
+				<!-- <div class="row">
+					<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<img src="..." alt="...">
+							<h2>Kevin Knoerzer</h2>
+							<h4>Scores</h4>
+							<p>1 2 3 4 5 6 7 8 9 10</p>
+						</div>
+					</div>
+				</div> -->
+			</div>
+
+
+		    <footer class="footer">
+		      <div class="container">
+			        <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/kknoerz/friend-finder">GitHub Repo</a></p>
+		      </div>
+		    </footer>
+
+		</div>
+
+		<script>
+
+		  var currentURL = window.location.origin;
+
+		  $.post(currentURL + "/users", function(data){
+		    console.log('This is data: ', data);
+				// debugger
+
+				for(i=0;i<1;i++){
+					// debugger;
+
+					$('.users').append('<div class="container" id="user'+i+'">').append('<div class="row ">').append('<div class="col-sm-6 col-md-4">').append('<div class="thumbnail">');
+					$('.thumbnail').append('<img src="'+data[i].photo+'" alt="'+data[i].name+'">')
+					$('.thumbnail').append('<h2>'+data[i].name+'</h2>');
+					$('.thumbnail').append('<h4>Scores</h4>');
+					$('.thumbnail').append('<p>'+data[i].scores.replace(/,/g, ' ')+'</p>').append('</div>').append('</div>').append('</div>');
+
+				}
+		  });
+
+
+
+		</script>>
+	</body>
+</html>
